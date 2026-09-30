@@ -1,5 +1,5 @@
 import { Controller, Get } from '@nestjs/common';
-import { Usuario, UsuarioModel } from '../../../domain/entity/user.entity';
+import { Usuario, UsuarioModel } from '../../../domain/entity/usuario.entity';
 
 @Controller('usuarios')
 export class UsuariosController {
