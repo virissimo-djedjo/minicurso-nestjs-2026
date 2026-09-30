@@ -11,7 +11,7 @@ export class UsuarioModel {
   status: string;
 }
 
-export default class Usuario {
+export class Usuario {
   private constructor(
     private readonly id: number,
     private readonly nome: string,
