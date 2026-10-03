@@ -1,13 +1,13 @@
-import { Controller, Get } from '@nestjs/common';
-import { Usuario, UsuarioModel } from '../../../domain/entity/usuario.entity';
+import { Controller, Get, Param } from '@nestjs/common';
+import SearchUsuarioService from '../application/services/search-usuario.service';
 
 @Controller('usuarios')
 export class UsuariosController {
-  @Get('')
-  public async getUsuario() {
-    const usuarioDto = {
-      id: 1,
-    } as UsuarioModel;
-    return Usuario.build(usuarioDto);
+  constructor(private readonly searchUsuarioService: SearchUsuarioService) {}
+
+  @Get('/:username')
+  public async getUsuariosByUsername(@Param('username') username: string) {
+    const usuarios = await this.searchUsuarioService.searchByUsername(username);
+    return usuarios;
   }
 }
