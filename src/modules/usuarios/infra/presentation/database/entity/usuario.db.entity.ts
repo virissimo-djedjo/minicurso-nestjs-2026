@@ -17,42 +17,42 @@ export default class UsuarioDBEntity extends Model<UsuarioModel> {
   @PrimaryKey
   @AutoIncrement
   @Column({ type: DataType.BIGINT })
-  declare public readonly id: number;
+  declare id: number;
 
   @Column({
     type: DataType.TEXT,
   })
-  public nome: string;
+  declare nome: string;
   @Column({
     type: DataType.TEXT,
   })
-  public sobrenome: string;
+  declare sobrenome: string;
   @Column({
     type: DataType.STRING(35),
   })
-  public nomeUsuario: string;
+  declare nomeUsuario: string;
   @Column({
     type: DataType.STRING(255),
   })
-  public email: string;
+  declare email: string;
   @Column({
     type: DataType.TEXT,
   })
-  public senhaHash: string;
+  declare senhaHash: string;
   @Column({
     type: DataType.STRING(14),
   })
-  public cpf: string;
+  declare cpf: string;
   @Column({
     type: DataType.JSONB,
   })
-  public bio: any;
+  declare bio: any;
   @Column({
     type: DataType.TEXT,
   })
-  public imagemPerfilUrl: string;
+  declare imagemPerfilUrl: string;
   @Column({
     type: DataType.TEXT,
   })
-  public status: string;
+  declare status: string;
 }

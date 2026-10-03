@@ -1,14 +1,17 @@
 export class UsuarioModel {
-  id: number;
-  nome: string;
-  sobrenome: string;
-  nomeUsuario: string;
-  email: string;
-  senhaHash: string;
-  cpf: string;
-  bio: string;
-  imagemPerfilUrl: string;
-  status: string;
+  id?: number;
+  nome?: string;
+  sobrenome?: string;
+  nomeUsuario?: string;
+  email?: string;
+  senhaHash?: string;
+  cpf?: string;
+  bio?: string;
+  imagemPerfilUrl?: string;
+  status?: string;
+  createdAt?: string;
+  updatedAt?: string;
+  deletedAt?: string;
 }
 
 export class Usuario {
@@ -74,16 +77,16 @@ export class Usuario {
   }
   public static build(usuario: UsuarioModel): Usuario {
     return new Usuario(
-      usuario.id,
-      usuario.nome,
-      usuario.sobrenome,
-      usuario.nomeUsuario,
-      usuario.email,
-      usuario.senhaHash,
-      usuario.cpf,
-      usuario.bio,
-      usuario.imagemPerfilUrl,
-      usuario.status,
+      usuario.id!,
+      usuario.nome!,
+      usuario.sobrenome!,
+      usuario.nomeUsuario!,
+      usuario.email!,
+      usuario.senhaHash!,
+      usuario.cpf!,
+      usuario.bio!,
+      usuario.imagemPerfilUrl!,
+      usuario.status!,
     );
   }
 }
