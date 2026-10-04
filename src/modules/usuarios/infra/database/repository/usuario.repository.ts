@@ -1,8 +1,7 @@
 import { Inject, Injectable } from '@nestjs/common';
 import { Sequelize } from 'sequelize-typescript';
 import { QueryTypes } from 'sequelize';
-import { UsuarioModel } from '../../../domain/entity/usuario.entity';
-import UsuarioDBEntity from '../entity/usuario.db.entity';
+import { SearchUsuarioResultDto } from '../../../application/dto/search-usuario.dto';
 
 @Injectable()
 export default class UsuarioRepository {
@@ -10,19 +9,20 @@ export default class UsuarioRepository {
 
   public async searchUsuarioByNomeUsuario(
     username: string,
-  ): Promise<UsuarioModel[]> {
+  ): Promise<SearchUsuarioResultDto[]> {
     const sql = `
-        SELECT *
-          FROM usuario u
-         WHERE u.nome_usuario ILIKE :username
-           AND u.deleted_at IS NULL
+        SELECT id,
+               nome,
+               sobrenome,
+               nome_usuario AS "nomeUsuario",
+               imagem_perfil_url AS "imagemPerfilUrl"
+          FROM usuario
+         WHERE nome_usuario ILIKE '%' || $1 || '%'
+           AND deleted_at IS NULL
       `;
-    const result = await this.sequelize.query(sql, {
-      replacements: { username: `%${username}%` },
+    return this.sequelize.query<SearchUsuarioResultDto>(sql, {
+      bind: [username.replace(/[\\%_]/g, '\\$&')],
       type: QueryTypes.SELECT,
-      mapToModel: true,
-      model: UsuarioDBEntity,
     });
-    return result.map((usuario: UsuarioDBEntity) => usuario.get());
   }
 }
