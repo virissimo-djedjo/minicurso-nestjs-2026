@@ -1,16 +1,18 @@
 services:
   postgres:
-    image: postgres:18-alpine
+    image: postgres:14-alpine
     environment:
-      POSTGRES_USER: ${POSTGRES_USER:-postgres}
-      POSTGRES_PASSWORD: ${POSTGRES_PASSWORD:-postgres}
-      POSTGRES_DB: ${POSTGRES_DB:-minicurso}
+      POSTGRES_USER: ${DB_USER:-postgres}
+      POSTGRES_PASSWORD: ${DB_PASSWORD:-postgres}
+      POSTGRES_DB: ${DB_NAME:-minicurso}
     ports:
-      - "5432:5432"
+      - '5432:5432'
     volumes:
-      - postgres_data:/var/lib/postgresql
+      - postgres_14_data:/var/lib/postgresql/data
+    networks:
+      - minicurso
     healthcheck:
-      test: ["CMD-SHELL", "pg_isready -U ${POSTGRES_USER:-postgres}"]
+      test: ['CMD-SHELL', 'pg_isready -U ${DB_USER:-postgres}']
       interval: 5s
       retries: 10
     restart: unless-stopped
@@ -18,11 +20,13 @@ services:
   redis:
     image: redis:8-alpine
     ports:
-      - "6379:6379"
+      - '6379:6379'
     volumes:
       - redis_data:/data
+    networks:
+      - minicurso
     healthcheck:
-      test: ["CMD", "redis-cli", "ping"]
+      test: ['CMD', 'redis-cli', 'ping']
       interval: 5s
       retries: 10
     restart: unless-stopped
@@ -31,16 +35,23 @@ services:
     image: pgsty/minio:RELEASE.2026-08-04T00-00-00Z
     command: server /data --console-address ":9001"
     environment:
-      MINIO_ROOT_USER: ${MINIO_ROOT_USER:-minio}
-      MINIO_ROOT_PASSWORD: ${MINIO_ROOT_PASSWORD:-minio123}
+      MINIO_ROOT_USER: ${STORAGE_ROOT_USER:-minio}
+      MINIO_ROOT_PASSWORD: ${STORAGE_ROOT_PASSWORD:-minio123}
     ports:
-      - "9000:9000"
-      - "9001:9001"
+      - '9000:9000'
+      - '9001:9001'
     volumes:
       - minio_data:/data
+    networks:
+      - minicurso
     restart: unless-stopped
 
 volumes:
-  postgres_data:
+  postgres_14_data:
   redis_data:
   minio_data:
+
+networks:
+  minicurso:
+    name: minicurso
+    driver: bridge
