@@ -1,6 +1,6 @@
 import { Injectable } from '@nestjs/common';
-import UsuarioRepository from '../../database/repository/usuario.repository';
-import { UsuarioModel } from '../../../../domain/entity/usuario.entity';
+import UsuarioRepository from '../../infra/database/repository/usuario.repository';
+import { UsuarioModel } from '../../domain/entity/usuario.entity';
 
 @Injectable()
 export default class SearchUsuarioService {

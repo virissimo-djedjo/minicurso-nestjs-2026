@@ -6,7 +6,7 @@ import {
   PrimaryKey,
   Table,
 } from 'sequelize-typescript';
-import { UsuarioModel } from '../../../../domain/entity/usuario.entity';
+import { UsuarioModel } from '../../../domain/entity/usuario.entity';
 
 @Table({
   timestamps: true,

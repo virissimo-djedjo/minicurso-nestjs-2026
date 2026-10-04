@@ -1,7 +1,7 @@
 import { Inject, Injectable } from '@nestjs/common';
 import { Sequelize } from 'sequelize-typescript';
 import { QueryTypes } from 'sequelize';
-import { UsuarioModel } from '../../../../domain/entity/usuario.entity';
+import { UsuarioModel } from '../../../domain/entity/usuario.entity';
 import UsuarioDBEntity from '../entity/usuario.db.entity';
 
 @Injectable()

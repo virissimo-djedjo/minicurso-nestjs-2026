@@ -1,5 +1,5 @@
 import { Controller, Get, Param } from '@nestjs/common';
-import SearchUsuarioService from '../application/services/search-usuario.service';
+import SearchUsuarioService from '../../application/services/search-usuario.service';
 
 @Controller('usuarios')
 export class UsuariosController {
