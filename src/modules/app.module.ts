@@ -23,7 +23,7 @@ import { SequelizeModule } from '@nestjs/sequelize';
         database: configService.get('db.name'),
         logging: false,
         autoLoadModels: true,
-        synchronize: true,
+        synchronize: false,
       }),
       inject: [ConfigService],
     }),
