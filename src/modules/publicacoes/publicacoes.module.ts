@@ -9,12 +9,14 @@ import { GetComentariosByPublicacaoUsecase } from './application/usecases/get-co
 import { ExcluirPublicacaoUsecase } from './application/usecases/excluir-publicacao.usecase';
 import { GetFeedUsecase } from './application/usecases/get-feed.usecase';
 import { PublicacoesController } from './infra/http/publicacoes.controller';
+import { CriarPublicacaoUsecase } from './application/usecases/criar-publicacao.usecase';
 
 const SERVICES = [
   ComentarPublicacaoUsecase,
   GetComentariosByPublicacaoUsecase,
   ExcluirPublicacaoUsecase,
   GetFeedUsecase,
+  CriarPublicacaoUsecase,
 ];
 
 @Module({
