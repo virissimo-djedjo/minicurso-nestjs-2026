@@ -16,6 +16,7 @@ export const HTTP_STATUS_BY_DOMAIN_CODE: Record<string, HttpStatus> = {
   STORAGE_INDISPONIVEL: HttpStatus.BAD_GATEWAY,
   CEP_NAO_ENCONTRADO: HttpStatus.NOT_FOUND,
   CEP_SERVICO_INDISPONIVEL: HttpStatus.BAD_GATEWAY,
+  PUBLICACAO_NAO_ENCONTRADA: HttpStatus.NOT_FOUND,
 };
 
 @Catch(DomainException)

@@ -24,3 +24,22 @@ export interface StoredFileRow {
 export interface EnderecoRow extends EnderecoDto {
   deletedAt: Date | null;
 }
+
+export interface PublicacaoRow {
+  id: string;
+  usuarioId: string;
+  conteudo: string | null;
+  imagemUrl: string | null;
+  status: string;
+  createdAt: Date;
+  deletedAt: Date | null;
+}
+
+export interface ComentarioRow {
+  id: string;
+  publicacaoId: string;
+  usuarioId: string;
+  conteudo: string;
+  createdAt: Date;
+  deletedAt: Date | null;
+}

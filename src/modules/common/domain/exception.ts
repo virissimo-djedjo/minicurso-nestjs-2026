@@ -92,4 +92,24 @@ export const DOMAIN_EXCEPTION = {
       domainCode: 'CEP_SERVICO_INDISPONIVEL',
     },
   },
+  PUBLICACAO: {
+    VAZIA: {
+      message: 'Escreva um texto ou escolha uma imagem para publicar.',
+      domainCode: 'PUBLICACAO_VAZIA',
+    },
+    CONTEUDO_LONGO: {
+      message: 'O texto da publicação deve ter no máximo 1000 caracteres.',
+      domainCode: 'PUBLICACAO_CONTEUDO_LONGO',
+    },
+    NAO_ENCONTRADA: {
+      message: 'Publicação não encontrada.',
+      domainCode: 'PUBLICACAO_NAO_ENCONTRADA',
+    },
+  },
+  COMENTARIO: {
+    VAZIO: {
+      message: 'Escreva algo para comentar.',
+      domainCode: 'COMENTARIO_VAZIO',
+    },
+  },
 } as const;
