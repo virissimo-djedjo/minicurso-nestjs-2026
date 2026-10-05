@@ -1,0 +1,93 @@
+:root {
+  --color-background: #f4f5f7;
+  --color-surface: #ffffff;
+  --color-text: #1d2330;
+  --color-muted: #6b7280;
+  --color-primary: #e0234e;
+  --color-primary-dark: #b81b3f;
+  --color-border: #dfe2e8;
+  --color-error: #b42318;
+  --radius: 10px;
+  font-family: system-ui, -apple-system, 'Segoe UI', Roboto, sans-serif;
+  color: var(--color-text);
+  background: var(--color-background);
+}
+
+* {
+  box-sizing: border-box;
+}
+
+body {
+  margin: 0;
+}
+
+input,
+textarea,
+button {
+  font: inherit;
+}
+
+input,
+textarea {
+  width: 100%;
+  padding: 10px 12px;
+  border: 1px solid var(--color-border);
+  border-radius: var(--radius);
+  background: var(--color-surface);
+}
+
+button {
+  padding: 10px 16px;
+  border: none;
+  border-radius: var(--radius);
+  background: var(--color-primary);
+  color: #ffffff;
+  font-weight: 600;
+  cursor: pointer;
+}
+
+button:hover {
+  background: var(--color-primary-dark);
+}
+
+button:disabled {
+  opacity: 0.6;
+  cursor: default;
+}
+
+.button-secondary {
+  background: transparent;
+  color: var(--color-primary);
+  border: 1px solid var(--color-primary);
+}
+
+.button-secondary:hover {
+  background: #fdecef;
+}
+
+.card {
+  background: var(--color-surface);
+  border: 1px solid var(--color-border);
+  border-radius: var(--radius);
+  padding: 24px;
+}
+
+.form {
+  display: flex;
+  flex-direction: column;
+  gap: 12px;
+}
+
+.form label {
+  display: flex;
+  flex-direction: column;
+  gap: 4px;
+  font-size: 14px;
+  color: var(--color-muted);
+}
+
+.error-message {
+  margin: 0;
+  color: var(--color-error);
+  font-size: 14px;
+}
