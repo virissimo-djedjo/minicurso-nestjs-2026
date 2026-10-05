@@ -66,4 +66,16 @@ export const DOMAIN_EXCEPTION = {
       domainCode: 'NOME_USUARIO_INVALIDO',
     },
   },
+  IMAGEM: {
+    TIPO_INVALIDO: {
+      message: 'Só imagens são aceitas (JPG, PNG, WEBP ou GIF).',
+      domainCode: 'IMAGEM_TIPO_INVALIDO',
+    },
+  },
+  STORAGE: {
+    INDISPONIVEL: {
+      message: 'Não foi possível guardar a imagem agora. Tente de novo.',
+      domainCode: 'STORAGE_INDISPONIVEL',
+    },
+  },
 } as const;

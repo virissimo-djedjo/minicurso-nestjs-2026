@@ -1,5 +1,5 @@
 import { FakeHashAdapter } from '../../../../../test/fakes/fake-hash.adapter';
-import { UsuarioRow } from '../../../../../test/fakes/fakes.dto';
+import { makeUsuarioRow } from '../../../../../test/fakes/make-usuario-row.util';
 import { InMemoryUsuarioRepository } from '../../../../../test/fakes/in-memory-usuario.repository';
 import {
   DOMAIN_EXCEPTION,
@@ -19,24 +19,6 @@ function makeCadastrarUsuarioDto(
     senha: 'segredo123',
     cpf: '529.982.247-25',
     dataNascimento: '2000-05-10',
-    ...dados,
-  };
-}
-
-function makeUsuarioRow(dados: Partial<UsuarioRow> = {}): UsuarioRow {
-  return {
-    id: '1',
-    nome: 'Maria',
-    sobrenome: 'Teste',
-    nomeUsuario: 'maria.teste',
-    email: 'maria@exemplo.com',
-    senhaHash: 'hash:segredo123',
-    cpf: '52998224725',
-    dataNascimento: '2000-05-10',
-    status: 'ATIVO',
-    enderecoId: null,
-    imagemPerfilUrl: null,
-    deletedAt: null,
     ...dados,
   };
 }

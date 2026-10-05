@@ -9,16 +9,19 @@ import { CadastrarUsuarioUsecase } from './application/usecases/cadastrar-usuari
 import { AutenticarUsuarioUsecase } from './application/usecases/autenticar-usuario.usecase';
 import { GetPerfilUsecase } from './application/usecases/get-perfil.usecase';
 import { AuthController } from './infra/http/auth.controller';
+import { AtualizarImagemPerfilUsecase } from './application/usecases/atualizar-imagem-perfil.usecase';
+import { CommonModule } from '../common/common.module';
 
 const SERVICES = [
   SearchUsuarioService,
   CadastrarUsuarioUsecase,
   AutenticarUsuarioUsecase,
   GetPerfilUsecase,
+  AtualizarImagemPerfilUsecase,
 ];
 
 @Module({
-  imports: [],
+  imports: [CommonModule],
   controllers: [UsuariosController, AuthController],
   providers: [
     { provide: UsuarioRepository, useClass: PostgresUsuarioRepository },

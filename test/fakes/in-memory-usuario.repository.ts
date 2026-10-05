@@ -94,6 +94,18 @@ export class InMemoryUsuarioRepository implements UsuarioRepository {
       : null;
   }
 
+  public async updateImagemPerfilUrl(
+    usuarioId: string,
+    imagemPerfilUrl: string,
+  ): Promise<void> {
+    const row = this.getActiveUsuarios().find(
+      (usuario) => usuario.id === usuarioId,
+    );
+    if (row) {
+      row.imagemPerfilUrl = imagemPerfilUrl;
+    }
+  }
+
   private getActiveUsuarios(): UsuarioRow[] {
     return [...this.usuarios.values()].filter((usuario) => !usuario.deletedAt);
   }

@@ -10,7 +10,7 @@ const EXPECTED_INVALID_ERROR = new DomainException(
   { cause: DOMAIN_EXCEPTION.EMAIL.INVALID.domainCode },
 );
 
-describe.skip('Email', () => {
+describe('Email', () => {
   it('Deve guardar o e-mail em minúsculas e sem espaços nas pontas quando o e-mail é válido', () => {
     const value = '  Maria.Teste@Exemplo.com ';
 
