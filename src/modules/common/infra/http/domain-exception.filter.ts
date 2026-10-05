@@ -9,6 +9,9 @@ import { DomainException } from '../../domain/exception';
 
 export const HTTP_STATUS_BY_DOMAIN_CODE: Record<string, HttpStatus> = {
   USUARIO_JA_CADASTRADO: HttpStatus.CONFLICT,
+  AUTH_CREDENCIAIS_INVALIDAS: HttpStatus.UNAUTHORIZED,
+  AUTH_USUARIO_INATIVO: HttpStatus.FORBIDDEN,
+  AUTH_SESSAO_INVALIDA: HttpStatus.UNAUTHORIZED,
 };
 
 @Catch(DomainException)

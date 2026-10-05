@@ -39,4 +39,18 @@ export const DOMAIN_EXCEPTION = {
       domainCode: 'USUARIO_JA_CADASTRADO',
     },
   },
+  AUTH: {
+    CREDENCIAIS_INVALIDAS: {
+      message: 'E-mail ou senha incorretos.',
+      domainCode: 'AUTH_CREDENCIAIS_INVALIDAS',
+    },
+    USUARIO_INATIVO: {
+      message: 'Sua conta não está ativa.',
+      domainCode: 'AUTH_USUARIO_INATIVO',
+    },
+    SESSAO_INVALIDA: {
+      message: 'Sua sessão não é mais válida. Faça login novamente.',
+      domainCode: 'AUTH_SESSAO_INVALIDA',
+    },
+  },
 } as const;

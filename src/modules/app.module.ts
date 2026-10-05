@@ -4,6 +4,7 @@ import { UsuariosModule } from './usuarios/usuarios.module';
 import { ConfigModule, ConfigService } from '@nestjs/config';
 import configuration from '../config/configuration';
 import { SequelizeModule } from '@nestjs/sequelize';
+import { JwtModule } from '@nestjs/jwt';
 
 @Module({
   imports: [
@@ -26,6 +27,14 @@ import { SequelizeModule } from '@nestjs/sequelize';
         synchronize: false,
       }),
       inject: [ConfigService],
+    }),
+    JwtModule.registerAsync({
+      global: true,
+      inject: [ConfigService],
+      useFactory: (configService: ConfigService) => ({
+        secret: configService.getOrThrow<string>('jwt.secret'),
+        signOptions: { expiresIn: '1h' },
+      }),
     }),
     CommonModule,
     UsuariosModule,
