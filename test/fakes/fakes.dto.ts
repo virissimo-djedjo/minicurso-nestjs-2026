@@ -1,4 +1,5 @@
 import { UsuarioStatus } from '../../src/modules/usuarios/domain/entity/usuario.dto';
+import { EnderecoDto } from '../../src/modules/enderecos/application/dto/endereco.dto';
 
 export interface UsuarioRow {
   id: string;
@@ -18,4 +19,8 @@ export interface UsuarioRow {
 export interface StoredFileRow {
   imagem: Buffer;
   contentType: string;
+}
+
+export interface EnderecoRow extends EnderecoDto {
+  deletedAt: Date | null;
 }

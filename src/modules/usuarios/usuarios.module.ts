@@ -11,6 +11,7 @@ import { GetPerfilUsecase } from './application/usecases/get-perfil.usecase';
 import { AuthController } from './infra/http/auth.controller';
 import { AtualizarImagemPerfilUsecase } from './application/usecases/atualizar-imagem-perfil.usecase';
 import { CommonModule } from '../common/common.module';
+import { EnderecosModule } from '../enderecos/enderecos.module';
 
 const SERVICES = [
   SearchUsuarioService,
@@ -21,7 +22,7 @@ const SERVICES = [
 ];
 
 @Module({
-  imports: [CommonModule],
+  imports: [CommonModule, EnderecosModule],
   controllers: [UsuariosController, AuthController],
   providers: [
     { provide: UsuarioRepository, useClass: PostgresUsuarioRepository },

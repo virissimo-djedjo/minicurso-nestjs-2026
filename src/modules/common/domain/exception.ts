@@ -78,4 +78,18 @@ export const DOMAIN_EXCEPTION = {
       domainCode: 'STORAGE_INDISPONIVEL',
     },
   },
+  CEP: {
+    INVALID: {
+      message: 'O CEP deve ter 8 dígitos.',
+      domainCode: 'CEP_INVALIDO',
+    },
+    NAO_ENCONTRADO: {
+      message: 'CEP não encontrado.',
+      domainCode: 'CEP_NAO_ENCONTRADO',
+    },
+    SERVICO_INDISPONIVEL: {
+      message: 'A consulta de CEP está fora do ar. Tente de novo em instantes.',
+      domainCode: 'CEP_SERVICO_INDISPONIVEL',
+    },
+  },
 } as const;

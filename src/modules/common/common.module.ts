@@ -3,6 +3,9 @@ import { ConfigService } from '@nestjs/config';
 import { StoragePort } from './application/ports/storage.port';
 import { LocalStorageAdapter } from './infra/storage/local-storage.adapter';
 import { S3StorageAdapter } from './infra/storage/s3-storage.adapter';
+import { CachePort } from './application/ports/cache.port';
+import { MapCacheAdapter } from './infra/cache/map-cache.adapter';
+import { RedisCacheAdapter } from './infra/cache/redis-cache.adapter';
 
 @Module({
   imports: [],
@@ -16,7 +19,15 @@ import { S3StorageAdapter } from './infra/storage/s3-storage.adapter';
           ? new S3StorageAdapter(configService)
           : new LocalStorageAdapter(),
     },
+    {
+      provide: CachePort,
+      inject: [ConfigService],
+      useFactory: (configService: ConfigService) =>
+        configService.get('cache.provider') === 'redis'
+          ? new RedisCacheAdapter(configService)
+          : new MapCacheAdapter(),
+    },
   ],
-  exports: [StoragePort],
+  exports: [StoragePort, CachePort],
 })
 export class CommonModule {}

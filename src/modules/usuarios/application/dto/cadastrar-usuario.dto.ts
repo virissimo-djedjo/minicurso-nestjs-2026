@@ -1,4 +1,9 @@
-import { IsNotEmpty, IsString, MinLength } from 'class-validator';
+import {
+  IsNotEmpty,
+  IsOptional,
+  IsString,
+  MinLength,
+} from 'class-validator';
 
 export class CadastrarUsuarioDto {
   @IsString()
@@ -28,6 +33,10 @@ export class CadastrarUsuarioDto {
   @IsString()
   @IsNotEmpty()
   dataNascimento: string;
+
+  @IsOptional()
+  @IsString()
+  cep?: string;
 }
 
 export interface UsuarioCadastradoDto {
