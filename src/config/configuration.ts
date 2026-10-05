@@ -22,4 +22,8 @@ export default () => ({
       secretAccessKey: process.env.STORAGE_ROOT_PASSWORD,
     },
   },
+  cache: {
+    provider: process.env.CACHE_PROVIDER ?? 'memory',
+    redisUrl: process.env.REDIS_URL,
+  },
 });

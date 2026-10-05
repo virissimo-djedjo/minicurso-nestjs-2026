@@ -12,15 +12,32 @@ const usuario = reactive({
   senha: '',
   cpf: '',
   dataNascimento: '',
+  cep: '',
 });
+const endereco = ref(null);
+const cepErrorMessage = ref('');
 const errorMessage = ref('');
 const isSending = ref(false);
+
+async function getEnderecoByCep() {
+  endereco.value = null;
+  cepErrorMessage.value = '';
+  if (!usuario.cep) {
+    return;
+  }
+  try {
+    const { data } = await api.get(`/enderecos/${usuario.cep}`);
+    endereco.value = data;
+  } catch (error) {
+    cepErrorMessage.value = getErrorMessage(error);
+  }
+}
 
 async function cadastrarUsuario() {
   errorMessage.value = '';
   isSending.value = true;
   try {
-    await api.post('/usuarios', usuario);
+    await api.post('/usuarios', { ...usuario, cep: usuario.cep || undefined });
     router.push('/login');
   } catch (error) {
     errorMessage.value = getErrorMessage(error);
@@ -66,6 +83,15 @@ async function cadastrarUsuario() {
           <input v-model="usuario.dataNascimento" type="date" required />
         </label>
       </div>
+      <label>
+        CEP (opcional)
+        <input v-model="usuario.cep" placeholder="00000-000" @blur="getEnderecoByCep" />
+      </label>
+      <p v-if="cepErrorMessage" class="error-message">{{ cepErrorMessage }}</p>
+      <p v-if="endereco" class="endereco">
+        {{ endereco.logradouro }}{{ endereco.logradouro ? ', ' : '' }}{{ endereco.bairro }}
+        · {{ endereco.cidade }} - {{ endereco.estado }}
+      </p>
       <p v-if="errorMessage" class="error-message">{{ errorMessage }}</p>
       <button type="submit" :disabled="isSending">Criar conta</button>
     </form>
@@ -84,6 +110,14 @@ h1 {
   display: grid;
   grid-template-columns: 1fr 1fr;
   gap: 12px;
+}
+
+.endereco {
+  margin: 0;
+  padding: 8px 12px;
+  border-radius: var(--radius);
+  background: var(--color-background);
+  font-size: 14px;
 }
 
 .footer {
