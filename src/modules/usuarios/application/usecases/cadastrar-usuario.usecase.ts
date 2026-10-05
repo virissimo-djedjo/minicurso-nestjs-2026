@@ -10,19 +10,24 @@ import {
 } from '../dto/cadastrar-usuario.dto';
 import { HashPort } from '../ports/hash.port';
 import { UsuarioRepository } from '../repositories/usuario.repository';
+import { GetEnderecoByCepUsecase } from '../../../enderecos/application/usecases/get-endereco-by-cep.usecase';
 
 @Injectable()
 export class CadastrarUsuarioUsecase {
   constructor(
     private readonly usuarioRepository: UsuarioRepository,
     private readonly hashPort: HashPort,
+    private readonly getEnderecoByCepUsecase: GetEnderecoByCepUsecase,
   ) {}
 
   public async execute(
     dados: CadastrarUsuarioDto,
   ): Promise<UsuarioCadastradoDto> {
+    const enderecoId = dados.cep
+      ? (await this.getEnderecoByCepUsecase.execute(dados.cep)).id
+      : null;
     const senhaHash = await this.hashPort.hash(dados.senha);
-    const usuario = Usuario.create({ ...dados, senhaHash, enderecoId: null });
+    const usuario = Usuario.create({ ...dados, senhaHash, enderecoId });
     if (await this.usuarioRepository.hasUsuarioCadastrado(usuario)) {
       throw new DomainException(
         DOMAIN_EXCEPTION.USUARIO.JA_CADASTRADO.message,

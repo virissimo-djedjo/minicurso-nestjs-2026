@@ -1,8 +1,11 @@
 import { OnModuleDestroy, OnModuleInit } from '@nestjs/common';
 import { ConfigService } from '@nestjs/config';
 import { createClient } from 'redis';
+import { CachePort } from '../../application/ports/cache.port';
 
-export class RedisCacheAdapter implements OnModuleInit, OnModuleDestroy {
+export class RedisCacheAdapter
+  implements CachePort, OnModuleInit, OnModuleDestroy
+{
   private readonly client: ReturnType<typeof createClient>;
 
   constructor(configService: ConfigService) {

@@ -7,6 +7,11 @@ import {
 } from '../../../common/domain/exception';
 import { CadastrarUsuarioDto } from '../dto/cadastrar-usuario.dto';
 import { CadastrarUsuarioUsecase } from './cadastrar-usuario.usecase';
+import { InMemoryEnderecoRepository } from '../../../../../test/fakes/in-memory-endereco.repository';
+import { FakeCepProviderAdapter } from '../../../../../test/fakes/fake-cep-provider.adapter';
+import { makeEndereco } from '../../../../../test/fakes/make-endereco.util';
+import { MapCacheAdapter } from '../../../common/infra/cache/map-cache.adapter';
+import { GetEnderecoByCepUsecase } from '../../../enderecos/application/usecases/get-endereco-by-cep.usecase';
 
 function makeCadastrarUsuarioDto(
   dados: Partial<CadastrarUsuarioDto> = {},
@@ -26,12 +31,24 @@ function makeCadastrarUsuarioDto(
 describe('CadastrarUsuarioUsecase', () => {
   let usuarioRepository: InMemoryUsuarioRepository;
   let hashAdapter: FakeHashAdapter;
+  let enderecoRepository: InMemoryEnderecoRepository;
+  let cepProvider: FakeCepProviderAdapter;
   let usecase: CadastrarUsuarioUsecase;
 
   beforeEach(() => {
     usuarioRepository = new InMemoryUsuarioRepository();
     hashAdapter = new FakeHashAdapter();
-    usecase = new CadastrarUsuarioUsecase(usuarioRepository, hashAdapter);
+    enderecoRepository = new InMemoryEnderecoRepository();
+    cepProvider = new FakeCepProviderAdapter();
+    usecase = new CadastrarUsuarioUsecase(
+      usuarioRepository,
+      hashAdapter,
+      new GetEnderecoByCepUsecase(
+        new MapCacheAdapter(),
+        enderecoRepository,
+        cepProvider,
+      ),
+    );
   });
 
   it('Deve cadastrar o usuário ativo com a senha guardada como hash quando os dados são válidos', async () => {
@@ -121,5 +138,19 @@ describe('CadastrarUsuarioUsecase', () => {
     expect([...usuarioRepository.usuarios.values()]).toStrictEqual([
       usuarioExistente,
     ]);
+  });
+
+  it('Deve vincular o endereço do CEP quando o cadastro informa um CEP', async () => {
+    cepProvider.enderecos.set('01001000', makeEndereco());
+    const dados = makeCadastrarUsuarioDto({ cep: '01001-000' });
+    const expectedUsuario = makeUsuarioRow({ enderecoId: '1' });
+    const expectedEndereco = { id: '1', ...makeEndereco(), deletedAt: null };
+
+    await usecase.execute(dados);
+
+    expect(usuarioRepository.usuarios.get('1')).toStrictEqual(expectedUsuario);
+    expect(enderecoRepository.enderecos.get('1')).toStrictEqual(
+      expectedEndereco,
+    );
   });
 });
