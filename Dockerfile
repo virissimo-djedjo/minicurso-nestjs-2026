@@ -36,7 +36,7 @@ RUN addgroup -g 1001 -S nodejs && \
 COPY --from=builder /app/dist ./dist
 COPY --from=builder /app/node_modules ./node_modules
 COPY --from=builder /app/package*.json ./
-COPY --from=build_client /app/client/dist ./client
+COPY --from=build_client /app/client/dist ./client/dist
 
 # Muda para usuário não-root
 USER nestjs
