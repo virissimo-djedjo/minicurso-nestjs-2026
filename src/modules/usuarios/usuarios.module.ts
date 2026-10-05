@@ -6,12 +6,20 @@ import { PostgresUsuarioRepository } from './infra/database/repository/postgres-
 import { HashPort } from './application/ports/hash.port';
 import { ScryptHashAdapter } from './infra/hash/scrypt-hash.adapter';
 import { CadastrarUsuarioUsecase } from './application/usecases/cadastrar-usuario.usecase';
+import { AutenticarUsuarioUsecase } from './application/usecases/autenticar-usuario.usecase';
+import { GetPerfilUsecase } from './application/usecases/get-perfil.usecase';
+import { AuthController } from './infra/http/auth.controller';
 
-const SERVICES = [SearchUsuarioService, CadastrarUsuarioUsecase];
+const SERVICES = [
+  SearchUsuarioService,
+  CadastrarUsuarioUsecase,
+  AutenticarUsuarioUsecase,
+  GetPerfilUsecase,
+];
 
 @Module({
   imports: [],
-  controllers: [UsuariosController],
+  controllers: [UsuariosController, AuthController],
   providers: [
     { provide: UsuarioRepository, useClass: PostgresUsuarioRepository },
     { provide: HashPort, useClass: ScryptHashAdapter },

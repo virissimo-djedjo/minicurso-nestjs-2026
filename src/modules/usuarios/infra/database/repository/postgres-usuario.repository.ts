@@ -7,6 +7,8 @@ import {
   UsuarioCadastradoDto,
 } from '../../../application/dto/cadastrar-usuario.dto';
 import { UsuarioRepository } from '../../../application/repositories/usuario.repository';
+import { CredencialUsuarioDto } from '../../../application/dto/autenticar-usuario.dto';
+import { PerfilUsuarioDto } from '../../../application/dto/perfil-usuario.dto';
 import { Usuario } from '../../../domain/entity/usuario.entity';
 import {
   DOMAIN_EXCEPTION,
@@ -94,5 +96,58 @@ export class PostgresUsuarioRepository implements UsuarioRepository {
       }
       throw error;
     }
+  }
+
+  public async getCredencialByEmail(
+    email: string,
+  ): Promise<CredencialUsuarioDto | null> {
+    const sql = `
+        SELECT id,
+               nome_usuario AS "nomeUsuario",
+               senha_hash AS "senhaHash",
+               status
+          FROM usuario
+         WHERE email = $1
+           AND deleted_at IS NULL
+      `;
+    const [credencial] = await this.sequelize.query<CredencialUsuarioDto>(
+      sql,
+      { bind: [email], type: QueryTypes.SELECT },
+    );
+    return credencial ?? null;
+  }
+
+  public async getPerfilById(
+    usuarioId: string,
+  ): Promise<PerfilUsuarioDto | null> {
+    const sql = `
+        SELECT usuario.id,
+               usuario.nome,
+               usuario.sobrenome,
+               usuario.nome_usuario AS "nomeUsuario",
+               usuario.email,
+               usuario.imagem_perfil_url AS "imagemPerfilUrl",
+               CASE
+                 WHEN endereco.id IS NULL THEN NULL
+                 ELSE json_build_object(
+                   'cep', endereco.cep,
+                   'logradouro', endereco.logradouro,
+                   'bairro', endereco.bairro,
+                   'cidade', endereco.cidade,
+                   'estado', endereco.estado
+                 )
+               END AS endereco
+          FROM usuario
+          LEFT JOIN endereco
+            ON endereco.id = usuario.endereco_id
+           AND endereco.deleted_at IS NULL
+         WHERE usuario.id = $1
+           AND usuario.deleted_at IS NULL
+      `;
+    const [perfil] = await this.sequelize.query<PerfilUsuarioDto>(sql, {
+      bind: [usuarioId],
+      type: QueryTypes.SELECT,
+    });
+    return perfil ?? null;
   }
 }
