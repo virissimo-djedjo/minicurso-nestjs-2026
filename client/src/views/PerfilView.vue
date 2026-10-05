@@ -41,7 +41,23 @@ function closeCropper() {
   selectedImagemUrl.value = '';
 }
 
-async function sendImagemPerfil() {}
+async function sendImagemPerfil() {
+  errorMessage.value = '';
+  isSending.value = true;
+  try {
+    const canvas = cropper.getCroppedCanvas({ width: 512, height: 512 });
+    const imagem = await new Promise((resolve) => canvas.toBlob(resolve, 'image/png'));
+    const formData = new FormData();
+    formData.append('imagem', imagem, 'perfil.png');
+    const { data } = await api.put('/usuarios/me/imagem-perfil', formData);
+    perfil.value.imagemPerfilUrl = data.imagemPerfilUrl;
+    closeCropper();
+  } catch (error) {
+    errorMessage.value = getErrorMessage(error);
+  } finally {
+    isSending.value = false;
+  }
+}
 
 onMounted(getPerfil);
 </script>

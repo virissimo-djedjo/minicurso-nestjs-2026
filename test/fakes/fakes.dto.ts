@@ -14,3 +14,8 @@ export interface UsuarioRow {
   imagemPerfilUrl: string | null;
   deletedAt: Date | null;
 }
+
+export interface StoredFileRow {
+  imagem: Buffer;
+  contentType: string;
+}

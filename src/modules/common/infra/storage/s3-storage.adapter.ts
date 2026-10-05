@@ -2,10 +2,11 @@ import { Logger } from '@nestjs/common';
 import { ConfigService } from '@nestjs/config';
 import { PutObjectCommand, S3Client } from '@aws-sdk/client-s3';
 import { DOMAIN_EXCEPTION, DomainException } from '../../domain/exception';
+import { StoragePort } from '../../application/ports/storage.port';
 
 const S3_REGION = 'us-east-1';
 
-export class S3StorageAdapter {
+export class S3StorageAdapter implements StoragePort {
   private readonly logger = new Logger(S3StorageAdapter.name);
   private readonly client: S3Client;
   private readonly endpoint: string;
