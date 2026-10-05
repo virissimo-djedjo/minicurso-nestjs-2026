@@ -10,7 +10,7 @@ const EXPECTED_INVALID_ERROR = new DomainException(
   { cause: DOMAIN_EXCEPTION.NOME_USUARIO.INVALID.domainCode },
 );
 
-describe.skip('NomeUsuario', () => {
+describe('NomeUsuario', () => {
   it('Deve guardar o nome de usuário em minúsculas quando ele é válido', () => {
     const value = ' Maria_Teste.01 ';
 
