@@ -15,6 +15,7 @@ function logout() {
     <span class="brand">Rede do Minicurso</span>
     <nav v-if="isLoggedIn" class="nav">
       <RouterLink to="/perfil">Perfil</RouterLink>
+      <RouterLink to="/feed">Feed</RouterLink>
       <button class="button-secondary" @click="logout">Sair</button>
     </nav>
   </header>

@@ -8,6 +8,7 @@ import { JwtModule } from '@nestjs/jwt';
 import { APP_GUARD } from '@nestjs/core';
 import { JwtAuthGuard } from './common/infra/http/jwt-auth.guard';
 import { EnderecosModule } from './enderecos/enderecos.module';
+import { PublicacoesModule } from './publicacoes/publicacoes.module';
 
 @Module({
   imports: [
@@ -42,6 +43,7 @@ import { EnderecosModule } from './enderecos/enderecos.module';
     CommonModule,
     UsuariosModule,
     EnderecosModule,
+    PublicacoesModule,
   ],
   controllers: [],
   providers: [{ provide: APP_GUARD, useClass: JwtAuthGuard }],
