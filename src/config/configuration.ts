@@ -13,4 +13,13 @@ export default () => ({
   jwt: {
     secret: process.env.JWT_SECRET,
   },
+  storage: {
+    provider: process.env.STORAGE_PROVIDER ?? 'local',
+    s3: {
+      endpoint: process.env.S3_ENDPOINT,
+      bucket: process.env.S3_BUCKET,
+      accessKeyId: process.env.STORAGE_ROOT_USER,
+      secretAccessKey: process.env.STORAGE_ROOT_PASSWORD,
+    },
+  },
 });

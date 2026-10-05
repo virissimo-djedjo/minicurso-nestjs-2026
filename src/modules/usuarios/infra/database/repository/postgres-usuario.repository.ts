@@ -150,4 +150,21 @@ export class PostgresUsuarioRepository implements UsuarioRepository {
     });
     return perfil ?? null;
   }
+
+  public async updateImagemPerfilUrl(
+    usuarioId: string,
+    imagemPerfilUrl: string,
+  ): Promise<void> {
+    const sql = `
+        UPDATE usuario
+           SET imagem_perfil_url = $2,
+               updated_at = now()
+         WHERE id = $1
+           AND deleted_at IS NULL
+      `;
+    await this.sequelize.query(sql, {
+      bind: [usuarioId, imagemPerfilUrl],
+      type: QueryTypes.UPDATE,
+    });
+  }
 }

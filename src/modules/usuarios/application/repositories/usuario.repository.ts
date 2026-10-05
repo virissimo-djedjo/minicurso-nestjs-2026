@@ -18,4 +18,9 @@ export abstract class UsuarioRepository {
   ): Promise<CredencialUsuarioDto | null>;
 
   abstract getPerfilById(usuarioId: string): Promise<PerfilUsuarioDto | null>;
+
+  abstract updateImagemPerfilUrl(
+    usuarioId: string,
+    imagemPerfilUrl: string,
+  ): Promise<void>;
 }
