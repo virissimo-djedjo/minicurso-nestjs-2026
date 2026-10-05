@@ -1,114 +1,143 @@
-<p align="center">
-  <a href="http://nestjs.com/" target="blank"><img src="https://nestjs.com/img/logo-small.svg" width="120" alt="Nest Logo" /></a>
-</p>
+# Minicurso NestJS 2026 (UDESC)
 
-[circleci-image]: https://img.shields.io/circleci/build/github/nestjs/nest/master?token=abc123def456
-[circleci-url]: https://circleci.com/gh/nestjs/nest
+Uma rede social pequena feita em aula: cadastro, login com JWT, foto de perfil, endereço por CEP com cache e um feed com publicações e comentários. O back-end é NestJS 11 com Fastify e Postgres; o front-end é Vue 3, na pasta `client/`.
 
-  <p align="center">A progressive <a href="http://nodejs.org" target="_blank">Node.js</a> framework for building efficient and scalable server-side applications.</p>
-    <p align="center">
-<a href="https://www.npmjs.com/~nestjscore" target="_blank"><img src="https://img.shields.io/npm/v/@nestjs/core.svg" alt="NPM Version" /></a>
-<a href="https://www.npmjs.com/~nestjscore" target="_blank"><img src="https://img.shields.io/npm/l/@nestjs/core.svg" alt="Package License" /></a>
-<a href="https://www.npmjs.com/~nestjscore" target="_blank"><img src="https://img.shields.io/npm/dm/@nestjs/common.svg" alt="NPM Downloads" /></a>
-<a href="https://circleci.com/gh/nestjs/nest" target="_blank"><img src="https://img.shields.io/circleci/build/github/nestjs/nest/master" alt="CircleCI" /></a>
-<a href="https://discord.gg/G7Qnnhy" target="_blank"><img src="https://img.shields.io/badge/discord-online-brightgreen.svg" alt="Discord"/></a>
-<a href="https://opencollective.com/nest#backer" target="_blank"><img src="https://opencollective.com/nest/backers/badge.svg" alt="Backers on Open Collective" /></a>
-<a href="https://opencollective.com/nest#sponsor" target="_blank"><img src="https://opencollective.com/nest/sponsors/badge.svg" alt="Sponsors on Open Collective" /></a>
-  <a href="https://paypal.me/kamilmysliwiec" target="_blank"><img src="https://img.shields.io/badge/Donate-PayPal-ff3f59.svg" alt="Donate us"/></a>
-    <a href="https://opencollective.com/nest#sponsor"  target="_blank"><img src="https://img.shields.io/badge/Support%20us-Open%20Collective-41B883.svg" alt="Support us"></a>
-  <a href="https://twitter.com/nestframework" target="_blank"><img src="https://img.shields.io/twitter/follow/nestframework.svg?style=social&label=Follow" alt="Follow us on Twitter"></a>
-</p>
-  <!--[![Backers on Open Collective](https://opencollective.com/nest/backers/badge.svg)](https://opencollective.com/nest#backer)
-  [![Sponsors on Open Collective](https://opencollective.com/nest/sponsors/badge.svg)](https://opencollective.com/nest#sponsor)-->
+## O que precisa estar instalado
 
-## Description
+- **Node 22** (testado no 22.21.1 e no 22.22.1). Confira com `node -v`.
+- **Git** com o **Git Bash** (no Windows, todos os comandos abaixo são no Git Bash).
+- **PostgreSQL 14** com o **pgAdmin 4**.
 
-[Nest](https://github.com/nestjs/nest) framework TypeScript starter repository.
+Docker é opcional: só serve para subir o Redis e o MinIO do bloco extra (ver [Redis e MinIO](#redis-e-minio-opcional)).
 
-## Project setup
+## Primeira vez
+
+### 1. Baixar o projeto e instalar as dependências
 
 ```bash
-$ npm install
+git clone <url-do-repositório>
+cd minicurso-nestjs-2026
+npm ci
+npm ci --prefix client
 ```
 
-## Compile and run the project
+Use `npm ci`, não `npm install`: ele instala exatamente as versões do `package-lock.json`, e todo mundo da sala fica com o mesmo código.
+
+### 2. Criar o banco no pgAdmin
+
+1. No pgAdmin, clique com o botão direito em **Databases** → **Create** → **Database...**, dê o nome `minicurso` e salve.
+2. Selecione o banco `minicurso` e abra **Tools** → **Query Tool**.
+3. Abra o arquivo `database/schema.sql` (ícone de pasta do Query Tool), e execute com **F5**.
+
+As tabelas (`usuario`, `endereco`, `publicacao`, `comentario` e as outras) devem aparecer em **Schemas** → **public** → **Tables**.
+
+### 3. Criar o `.env`
 
 ```bash
-# development
-$ npm run start
-
-# watch mode
-$ npm run start:dev
-
-# production mode
-$ npm run start:prod
+cp .env.example .env
 ```
 
-## Run tests
+Abra o `.env` e troque:
+
+- `DB_PASSWORD` pela senha do seu Postgres;
+- `JWT_SECRET` por um texto longo qualquer (é a chave que assina o token de login).
+
+O resto já vem pronto para rodar sem Docker: imagens salvas na pasta `uploads/` (`STORAGE_PROVIDER=local`) e cache em memória (`CACHE_PROVIDER=memory`).
+
+### 4. Subir
+
+Em um terminal, a API (porta 3030):
 
 ```bash
-# unit tests
-$ npm run test
-
-# e2e tests
-$ npm run test:e2e
-
-# test coverage
-$ npm run test:cov
+npm run start:dev
 ```
 
-## Deployment
-
-When you're ready to deploy your NestJS application to production, there are some key steps you can take to ensure it runs as efficiently as possible. Check out the [deployment documentation](https://docs.nestjs.com/deployment) for more information.
-
-If you are looking for a cloud-based platform to deploy your NestJS application, check out [Mau](https://mau.nestjs.com), our official platform for deploying NestJS applications on AWS. Mau makes deployment straightforward and fast, requiring just a few simple steps:
+Em outro terminal, o front-end (porta 5173, já encaminha as chamadas para a API):
 
 ```bash
-$ npm install -g @nestjs/mau
-$ mau deploy
+npm run dev --prefix client
 ```
 
-With Mau, you can deploy your application in just a few clicks, allowing you to focus on building features rather than managing infrastructure.
+Abra http://localhost:5173. Para a API servir o front-end sozinha em http://localhost:3030, gere o build uma vez com `npm run build --prefix client`.
 
-## Observability
+## Tags de cada bloco
 
-In production applications, observability is essential for understanding how your system behaves, detecting issues early, and maintaining reliable performance.
+Cada bloco da aula tem duas tags. Se você se perder ou quiser só acompanhar, pule direto para o código do ponto em que a aula está.
 
-[NestJS Observe](https://observe.nestjs.com) automatically instruments your NestJS application, giving you deep visibility into your system with minimal setup:
+| Bloco | Assunto | Começo do bloco | Fim do bloco |
+|---|---|---|---|
+| 1 | Arquitetura e cadastro | `bloco-1` | `bloco-1-ao-vivo` |
+| 2 | Login e guards | `bloco-2` | `bloco-2-ao-vivo` |
+| 3 | Testes e desafio dos value objects | `bloco-3` | `bloco-3-ao-vivo` |
+| 4 | Upload da foto de perfil | `bloco-4` | `bloco-4-ao-vivo` |
+| 5 | ViaCEP e Cache-Aside | `bloco-5` | `bloco-5-ao-vivo` |
+| 6 | Publicações e comentários | `bloco-6` | `bloco-6-ao-vivo` |
+| | Projeto completo | | `final` |
 
-- **Distributed tracing:** Follow requests across services and understand how they flow through your system.
-- **Waterfall analysis:** Visualize request execution and identify slow operations, bottlenecks, and unexpected delays.
-- **Performance analysis:** Analyze application performance in real time and quickly pinpoint areas that need optimization.
-- **Metrics:** Track key application and infrastructure metrics to understand system health and performance trends.
-- **Logging:** Centralize and correlate logs with traces and other telemetry to make debugging easier.
-- **Error tracking:** Detect errors quickly and investigate their root causes with the surrounding context.
-- **SLA monitoring:** Track service-level objectives and identify when your application is approaching or exceeding defined thresholds.
-- **Alarms and alerts:** Set up alerts for critical errors, performance degradation, SLA violations, and other anomalies so your team can react quickly.
+Para ir até uma tag, guarde antes o que você fez numa branch sua (senão o git recusa a troca):
 
-## Resources
+```bash
+git switch -c meu-bloco-2
+git add -A
+git commit -m "minha versão do bloco 2"
+```
 
-Check out a few resources that may come in handy when working with NestJS:
+E então crie uma branch a partir da tag:
 
-- Visit the [NestJS Documentation](https://docs.nestjs.com) to learn more about the framework.
-- For questions and support, please visit our [Discord channel](https://discord.gg/G7Qnnhy).
-- To dive deeper and get more hands-on experience, check out our official video [courses](https://courses.nestjs.com/).
-- Deploy your application to AWS with the help of [NestJS Mau](https://mau.nestjs.com) in just a few clicks.
-- Auto-instrument your application with [NestJS Observer](https://observer.nestjs.com). Distributed tracing, metrics, and logging made easy. Error tracking and performance monitoring for your NestJS applications.
-- Visualize your application graph and interact with the NestJS application in real-time using [NestJS Devtools](https://devtools.nestjs.com).
-- Need help with your project (part-time to full-time)? Check out our official [enterprise support](https://enterprise.nestjs.com).
-- To stay in the loop and get updates, follow us on [X](https://x.com/nestframework) and [LinkedIn](https://linkedin.com/company/nestjs).
-- Looking for a job, or have a job to offer? Check out our official [Jobs board](https://jobs.nestjs.com).
+```bash
+git switch -c acompanhando-bloco-3 bloco-3
+```
 
-## Support
+Se o `package.json` mudou entre as tags, rode `npm ci` (e `npm ci --prefix client`) de novo.
 
-Nest is an MIT-licensed open source project. It can grow thanks to the sponsors and support by the amazing backers. If you'd like to join them, please [read more here](https://docs.nestjs.com/support).
+## Testando a API pelo Git Bash
 
-## Stay in touch
+```bash
+curl -X POST localhost:3030/usuarios \
+  -H 'content-type: application/json' \
+  -d '{"nome":"Maria","sobrenome":"Teste","nomeUsuario":"maria.teste","email":"maria@exemplo.com","senha":"segredo123","cpf":"52998224725","dataNascimento":"2000-05-10","cep":"01001000"}'
 
-- Author - [Kamil Myśliwiec](https://twitter.com/kammysliwiec)
-- Website - [https://nestjs.com](https://nestjs.com/)
-- Twitter - [@nestframework](https://twitter.com/nestframework)
+TOKEN=$(curl -s -X POST localhost:3030/auth/login \
+  -H 'content-type: application/json' \
+  -d '{"email":"maria@exemplo.com","senha":"segredo123"}' | sed 's/.*"accessToken":"\([^"]*\)".*/\1/')
 
-## License
+curl localhost:3030/usuarios/me -H "Authorization: Bearer $TOKEN"
+curl localhost:3030/enderecos/88015100
+curl -X POST localhost:3030/publicacoes -H "Authorization: Bearer $TOKEN" -F 'conteudo=Primeira publicação!'
+curl 'localhost:3030/publicacoes?page=1&limit=20' -H "Authorization: Bearer $TOKEN"
+```
 
-Nest is [MIT licensed](https://github.com/nestjs/nest/blob/master/LICENSE).
+## Testes
+
+```bash
+npx jest src/modules
+```
+
+## Redis e MinIO (opcional)
+
+Quem tem Docker sobe o Postgres, o Redis e o MinIO com:
+
+```bash
+docker compose up -d
+```
+
+- **Redis:** troque para `CACHE_PROVIDER=redis` no `.env`. As chaves aparecem com `docker compose exec redis redis-cli keys 'endereco:*'`.
+- **MinIO:** troque para `STORAGE_PROVIDER=s3`. No console (http://localhost:9001, usuário e senha do `.env`), crie o bucket `minicurso` e deixe o acesso como público para leitura.
+
+Nada no código muda: o módulo escolhe o adapter pela variável de ambiente.
+
+## Rotas
+
+| Método | Rota | Precisa de login |
+|---|---|---|
+| `POST` | `/usuarios` | não |
+| `POST` | `/auth/login` | não |
+| `GET` | `/usuarios/me` | sim |
+| `PUT` | `/usuarios/me/imagem-perfil` | sim |
+| `GET` | `/usuarios/:nomeUsuario` | sim |
+| `GET` | `/enderecos/:cep` | não |
+| `POST` | `/publicacoes` | sim |
+| `GET` | `/publicacoes?page=1&limit=20` | sim |
+| `DELETE` | `/publicacoes/:publicacaoId` | sim, só quem publicou |
+| `POST` | `/publicacoes/:publicacaoId/comentarios` | sim |
+| `GET` | `/publicacoes/:publicacaoId/comentarios` | sim |
