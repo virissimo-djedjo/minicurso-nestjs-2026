@@ -53,4 +53,17 @@ export const DOMAIN_EXCEPTION = {
       domainCode: 'AUTH_SESSAO_INVALIDA',
     },
   },
+  EMAIL: {
+    INVALID: {
+      message: 'O e-mail informado não possui um formato válido.',
+      domainCode: 'EMAIL_INVALIDO',
+    },
+  },
+  NOME_USUARIO: {
+    INVALID: {
+      message:
+        'O nome de usuário deve ter de 3 a 35 caracteres entre letras minúsculas, números, _ e ponto.',
+      domainCode: 'NOME_USUARIO_INVALIDO',
+    },
+  },
 } as const;
