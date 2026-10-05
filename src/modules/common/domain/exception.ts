@@ -33,4 +33,10 @@ export const DOMAIN_EXCEPTION = {
       domainCode: 'DATA_NASCIMENTO_IDADE_MINIMA',
     },
   },
+  USUARIO: {
+    JA_CADASTRADO: {
+      message: 'Já existe um usuário com este CPF, e-mail ou nome de usuário.',
+      domainCode: 'USUARIO_JA_CADASTRADO',
+    },
+  },
 } as const;
