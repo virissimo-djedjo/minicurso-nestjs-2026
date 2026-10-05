@@ -40,9 +40,12 @@ export class DataNascimento {
       );
     }
     if (this.getIdade() < DataNascimento.MINIMUM_AGE) {
-      throw new Error(DOMAIN_EXCEPTION.DATA_NASCIMENTO.IDADE_MINIMA.message, {
-        cause: DOMAIN_EXCEPTION.DATA_NASCIMENTO.IDADE_MINIMA.domainCode,
-      });
+      throw new DomainException(
+        DOMAIN_EXCEPTION.DATA_NASCIMENTO.IDADE_MINIMA.message,
+        {
+          cause: DOMAIN_EXCEPTION.DATA_NASCIMENTO.IDADE_MINIMA.domainCode,
+        },
+      );
     }
   }
 
