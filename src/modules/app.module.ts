@@ -5,7 +5,7 @@ import { ConfigModule, ConfigService } from '@nestjs/config';
 import configuration from '../config/configuration';
 import { SequelizeModule } from '@nestjs/sequelize';
 import { JwtModule } from '@nestjs/jwt';
-import { APP_GUARD } from '@nestjs/core';
+import { APP_GUARD} from '@nestjs/core';
 import { JwtAuthGuard } from './common/infra/http/jwt-auth.guard';
 import { EnderecosModule } from './enderecos/enderecos.module';
 import { PublicacoesModule } from './publicacoes/publicacoes.module';
